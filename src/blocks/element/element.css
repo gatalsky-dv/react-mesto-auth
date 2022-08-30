@@ -1,0 +1,12 @@
+.element {
+  margin: 0;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #FFFFFF;
+  width: 282px;
+  min-height: 361px;
+}
+
+.element:hover {
+  cursor: pointer;
+}

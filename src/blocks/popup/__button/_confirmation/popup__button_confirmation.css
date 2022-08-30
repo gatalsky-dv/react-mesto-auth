@@ -1,0 +1,21 @@
+.popup__button_confirm {
+  margin: 0;
+}
+
+@media screen and (min-width: 320px) {
+  .popup__button_confirm {
+    margin: 38px 22px 25px 22px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .popup__button_confirm {
+    margin: 38px 17.5px 37px 17.5px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .popup__button_confirm {
+    margin: 38px 36px 36px 36px;
+  }
+}

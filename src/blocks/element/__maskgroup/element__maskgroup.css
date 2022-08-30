@@ -1,0 +1,11 @@
+.element__maskgroup {
+  margin: 0;
+  border-radius: 10px 10px 0 0;
+  background: black;
+  width: 282px;
+  min-width: 282px;
+  height: 282px;
+  min-height: 282px;
+  background-size: cover;
+  object-fit: cover;
+}

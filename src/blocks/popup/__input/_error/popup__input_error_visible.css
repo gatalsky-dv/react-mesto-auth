@@ -1,0 +1,30 @@
+.popup__input_error_visible {
+  position: absolute;
+  margin: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #FF0000;
+}
+  
+@media screen and (min-width: 320px) {
+  .popup__input_error_visible {
+    margin: 5px 22px 0 22px;
+    max-width: 238px;
+  }
+}
+  
+@media screen and (min-width: 768px) {
+  .popup__input_error_visible {
+    max-width: 330px;
+    margin: 5px 17.5px 0 17.5px;
+  }
+}
+  
+@media screen and (min-width: 1024px) {
+  .popup__input_error_visible {
+    max-width: 358px;
+    max-height: 100%;
+    margin: 5px 36px 0 36px;
+  }
+}
