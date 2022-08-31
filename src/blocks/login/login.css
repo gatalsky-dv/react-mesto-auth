@@ -1,0 +1,26 @@
+.login {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+}
+
+@media screen and (min-width: 320px) {
+	.login {
+		max-width: 320px;
+		min-height: 484px;
+
+	}
+}
+
+@media screen and (min-width: 768px) {
+	.login {
+		max-width: 581px;
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	.login {
+		max-width: 358px;
+		min-height: 601px;
+	}
+}

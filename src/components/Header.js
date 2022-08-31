@@ -1,7 +1,9 @@
 function Header() {
   return (
     <header className="header">
-      <a href="src/components/App#" className="header__logo" />
+      <a href="#" className="header__logo" />
+      {/*<a href="#" className="header__login" >Войти</a>*/}
+      <a href="#" className="header__login" >Регистрация</a>
     </header>
   )
 }

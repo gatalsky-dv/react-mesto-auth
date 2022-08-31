@@ -4,6 +4,7 @@ import "../index.css";
 import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
+import Login from "./Login";
 import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 import api from "../utils/Api.js";
@@ -144,16 +145,21 @@ export default function App() {
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="page">
 				<Header/>
-				<Main
-					onEditProfile={handleEditProfileClick}
-					onAddPlace={handleAddPlaceClick}
-					onEditAvatar={handleEditAvatarClick}
-					onCardClick={handleCardClick}
-					cards={cards}
-					onCardLike={handleCardLike}
-					onCardDelete={handleCardDelete}
-				/>
+				{/*<Main*/}
+				{/*	onEditProfile={handleEditProfileClick}*/}
+				{/*	onAddPlace={handleAddPlaceClick}*/}
+				{/*	onEditAvatar={handleEditAvatarClick}*/}
+				{/*	onCardClick={handleCardClick}*/}
+				{/*	cards={cards}*/}
+				{/*	onCardLike={handleCardLike}*/}
+				{/*	onCardDelete={handleCardDelete}*/}
+				{/*/>*/}
+				<Login />
+				{/*<Register />*/}
+				{/*<InfoTooltip />*/}
+				
 				<Footer/>
+				
 				<EditProfilePopup
 					isOpen={isEditProfilePopupOpen}
 					onClose={closeAllPopups}
