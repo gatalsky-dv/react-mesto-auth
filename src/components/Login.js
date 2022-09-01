@@ -3,7 +3,7 @@
 export default function Login() {
 	
 	return (
-		<div className="login">
+		<form className="login">
 			<h2 className="login__text">Вход</h2>
 			<input
 				type="text"
@@ -30,7 +30,7 @@ export default function Login() {
 				// onChange={handleAboutChange}
 			/>
 			<button type="submit" className="login__button">Войти</button>
-		</div>
+		</form>
 		
 		
 	)

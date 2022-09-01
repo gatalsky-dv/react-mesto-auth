@@ -5,6 +5,8 @@ import Header from "./Header.js";
 import Main from "./Main.js";
 import Footer from "./Footer.js";
 import Login from "./Login";
+import Register from "./Register";
+import InfoTooltip from "./InfoTooltip";
 import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 import api from "../utils/Api.js";
@@ -154,8 +156,8 @@ export default function App() {
 				{/*	onCardLike={handleCardLike}*/}
 				{/*	onCardDelete={handleCardDelete}*/}
 				{/*/>*/}
-				<Login />
-				{/*<Register />*/}
+				{/*<Login />*/}
+				<Register />
 				{/*<InfoTooltip />*/}
 				
 				<Footer/>
