@@ -6,6 +6,7 @@
 @import url(./blocks/header/header.css);
 @import url(./blocks/header/__logo/header__logo.css);
 @import url(./blocks/header/__login/header__login.css);
+@import url(./blocks/header/__email/header__email.css);
 
 /* content */
 @import url(./blocks/content/content.css);
@@ -63,6 +64,10 @@
 @import url(./blocks/element/__counter/element__counter.css);
 @import url(./blocks/element/__trash/_disabled/element__trash_disabled.css);
 @import url(./blocks/element/__likes/element__likes.css);
+
+@import url(./blocks/popup/_info/popup_info.css);
+@import url(./blocks/popup/__union/popup__union.css);
+@import url(./blocks/popup/__infotext/popup__infotext.css);
 
 /*login*/
 @import url(./blocks/login/login.css);

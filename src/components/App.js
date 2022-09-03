@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import "../index.css";
 import Header from "./Header.js";
 import Main from "./Main.js";
@@ -144,52 +144,83 @@ export default function App() {
 	}, [isOpen]);
 	
 	return (
-		<CurrentUserContext.Provider value={currentUser}>
-			<div className="page">
-				<Header/>
-				{/*<Main*/}
-				{/*	onEditProfile={handleEditProfileClick}*/}
-				{/*	onAddPlace={handleAddPlaceClick}*/}
-				{/*	onEditAvatar={handleEditAvatarClick}*/}
-				{/*	onCardClick={handleCardClick}*/}
-				{/*	cards={cards}*/}
-				{/*	onCardLike={handleCardLike}*/}
-				{/*	onCardDelete={handleCardDelete}*/}
-				{/*/>*/}
-				{/*<Login />*/}
-				<Register />
-				{/*<InfoTooltip />*/}
-				
-				<Footer/>
-				
-				<EditProfilePopup
-					isOpen={isEditProfilePopupOpen}
-					onClose={closeAllPopups}
-					onUpdateUser={handleUpdateUser}
-				/>
-				<AddPlacePopup
-					isOpen={isAddPlacePopupOpen}
-					onClose={closeAllPopups}
-					onAddPlace={handleAddPlaceSubmit}
-				/>
-				
-				<EditAvatarPopup
-					isOpen={isEditAvatarPopupOpen}
-					onClose={closeAllPopups}
-					onUpdateAvatar={handleUpdateAvatar}
-				/>
-
-				<PopupWithForm
-					name="confirmation"
-					title="Вы уверены?"
-				/>
-				<ImagePopup
-					name="image"
-					card={selectedCard}
-					isOpen={!!selectedCard}
-					onClose={closeAllPopups}
-				/>
-			</div>
-		</CurrentUserContext.Provider>
+		<BrowserRouter>
+			<CurrentUserContext.Provider value={currentUser}>
+				<div className="page">
+					<Switch>
+						<Route exact path="/">
+							<Header
+								sign="Выйти"
+								email="email@email.com"
+							/>
+							<Main
+								onEditProfile={handleEditProfileClick}
+								onAddPlace={handleAddPlaceClick}
+								onEditAvatar={handleEditAvatarClick}
+								onCardClick={handleCardClick}
+								cards={cards}
+								onCardLike={handleCardLike}
+								onCardDelete={handleCardDelete}
+							/>
+						</Route>
+						<Route path="/sign-up">
+							<Header
+								sign="Войти"
+								
+							/>
+							<Register
+							
+							/>
+						</Route>
+						<Route path="/sign-in">
+							<Header
+								sign="Регистрация"
+							/>
+							<Login
+							
+							/>
+						</Route>
+					</Switch>
+	
+					
+					
+					<InfoTooltip
+						title="Вы успешно зарегистрировались!"
+						isOpen={false}
+						name="info"
+					/>
+					
+					<Footer/>
+					
+					<EditProfilePopup
+						isOpen={isEditProfilePopupOpen}
+						onClose={closeAllPopups}
+						onUpdateUser={handleUpdateUser}
+					/>
+					<AddPlacePopup
+						isOpen={isAddPlacePopupOpen}
+						onClose={closeAllPopups}
+						onAddPlace={handleAddPlaceSubmit}
+					/>
+					
+					<EditAvatarPopup
+						isOpen={isEditAvatarPopupOpen}
+						onClose={closeAllPopups}
+						onUpdateAvatar={handleUpdateAvatar}
+					/>
+	
+					<PopupWithForm
+						name="confirmation"
+						title="Вы уверены?"
+					/>
+					<ImagePopup
+						name="image"
+						card={selectedCard}
+						isOpen={!!selectedCard}
+						onClose={closeAllPopups}
+					/>
+				</div>
+			</CurrentUserContext.Provider>
+		</BrowserRouter>
 	);
 }
