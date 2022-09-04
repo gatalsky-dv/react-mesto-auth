@@ -18,7 +18,7 @@ export default function Login() {
 				// onChange={handleNameChange}
 			/>
 			<input
-				type="text"
+				type="password"
 				className="login__input login__input_value_password"
 				id="password-input"
 				name="password"

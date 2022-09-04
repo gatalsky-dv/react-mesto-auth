@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, useHistory, Redirect } from "react-router-dom";
 import "../index.css";
 import Header from "./Header.js";
 import Main from "./Main.js";
@@ -7,6 +7,7 @@ import Footer from "./Footer.js";
 import Login from "./Login";
 import Register from "./Register";
 import InfoTooltip from "./InfoTooltip";
+import ProtectedRoute from "./ProtectedRoute";
 import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 import api from "../utils/Api.js";
@@ -17,13 +18,35 @@ import AddPlacePopup from "./AddPlaceSubmit";
 
 export default function App() {
 	
+	const history = useHistory();
+
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
 	const [selectedCard, setSelectedCard] = useState(null);
 	const [currentUser, setCurrentUser] = useState({});
 	const [cards, setCards] = useState([]);
+
+	const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
+	const [loggedIn, setLoggedIn] = useState(false);
+	const [isLiginSuccess, setIsLoginSuccess] = useState(false);
 	
+	const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard
+	
+	useEffect(() => {
+		function closeByEscape(e) {
+			if(e.key === "Escape") {
+				closeAllPopups();
+			}
+		}
+		if(isOpen) {
+			document.addEventListener("keydown", closeByEscape);
+			return () => {
+				document.removeEventListener("keydown", closeByEscape);
+			}
+		}
+	}, [isOpen]);
+
 	useEffect(() => {
 		api.getUserInfo()
 			.then((res) => {
@@ -45,6 +68,8 @@ export default function App() {
 	}, []);
 	
 	
+
+
 	function handleCardLike(card) {
 		// снова проверяем, есть ли уже лайк на этой карточке
 		const isLiked = card.likes.some( i => i._id === currentUser._id );
@@ -98,12 +123,6 @@ export default function App() {
 			.catch((err) => console.log(err))
 	}
 	
-	const handleEscClose = (evt) => {
-		if (evt.key === 'Escape') {
-			closeAllPopups();
-		}
-	}
-	
 	function handleEditProfileClick() {
 		setIsEditProfilePopupOpen(true);
 	}
@@ -119,6 +138,10 @@ export default function App() {
 	function handleCardClick(card) {
 		setSelectedCard(card);
 	}
+
+	function handleRegisterSubmit() {
+
+	}
 	
 	function closeAllPopups() {
 		setIsEditProfilePopupOpen(false);
@@ -127,63 +150,74 @@ export default function App() {
 		setSelectedCard(null);
 	}
 	
-	const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard
-	
-	useEffect(() => {
-		function closeByEscape(e) {
-			if(e.key === 'Escape') {
-				closeAllPopups();
-			}
-		}
-		if(isOpen) {
-			document.addEventListener('keydown', closeByEscape);
-			return () => {
-				document.removeEventListener('keydown', closeByEscape);
-			}
-		}
-	}, [isOpen]);
+	function redirectToRegister() {
+		history.push("/sign-up");
+	}
+
+	function redirectToLogin() {
+		history.push("/sign-in");
+	}
+
+	function checkout() {
+		localStorage.removeItem("jwt");
+		history.push("/sign-in");
+	}
 	
 	return (
 		<BrowserRouter>
 			<CurrentUserContext.Provider value={currentUser}>
 				<div className="page">
+					
 					<Switch>
-						<Route exact path="/">
-							<Header
-								sign="Выйти"
-								email="email@email.com"
-							/>
-							<Main
-								onEditProfile={handleEditProfileClick}
-								onAddPlace={handleAddPlaceClick}
-								onEditAvatar={handleEditAvatarClick}
-								onCardClick={handleCardClick}
-								cards={cards}
-								onCardLike={handleCardLike}
-								onCardDelete={handleCardDelete}
-							/>
-						</Route>
-						<Route path="/sign-up">
+						<ProtectedRoute
+							exact
+							path="/"
+							component={ Main }
+							loggedIn={loggedIn}
+							onEditProfile={handleEditProfileClick}
+							onAddPlace={handleAddPlaceClick}
+							onEditAvatar={handleEditAvatarClick}
+							onCardClick={handleCardClick}
+							cards={cards}
+							onCardLike={handleCardLike}
+							onCardDelete={handleCardDelete}
+							// onLoginClick={checkout}
+						/>
+						<Route exact path="/sign-up">
 							<Header
 								sign="Войти"
-								
+								onLoginClick={redirectToLogin}
 							/>
 							<Register
-							
+								signText="Регистрация"
+								buttonText="Зарегистрироваться"
+								// onSubmit={handleRegisterSubmit}
 							/>
 						</Route>
 						<Route path="/sign-in">
 							<Header
 								sign="Регистрация"
+								onLoginClick={redirectToRegister}
 							/>
 							<Login
-							
+								signText="Вход"
+								buttonText="Войти"
+								onSubmit={handleRegisterSubmit}
+								setLoggedIn={setLoggedIn}
 							/>
 						</Route>
+						<Route>
+							{loggedIn ? (
+								<Redirect to="/" />
+							) : (
+								<Redirect to="/sign-up" />
+							)}
+						</Route>
+						{/* <Route path="*">
+							<NotFoundPage />
+						</Route> */}
 					</Switch>
 	
-					
-					
 					<InfoTooltip
 						title="Вы успешно зарегистрировались!"
 						isOpen={false}

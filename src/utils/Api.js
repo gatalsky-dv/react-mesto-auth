@@ -27,7 +27,7 @@ class Api {
 
   editProfile({name, about}) {
     return fetch(`${this._baseUrl}/users/me`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
         name,
@@ -39,7 +39,7 @@ class Api {
 
   addNewCard({name, link}) {
     return fetch(`${this._baseUrl}/cards`, {
-      method: 'POST',
+      method: "POST",
       headers: this._headers,
       body: JSON.stringify({
         name,
@@ -51,7 +51,7 @@ class Api {
 
   deleteCard(cardId) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: this._headers,
     })
       .then(res => this._сheckResponseData(res));
@@ -59,7 +59,7 @@ class Api {
 
   showLikesCard(cardId, isLiked) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-      method: isLiked ? 'DELETE' : 'PUT',
+      method: isLiked ? "DELETE" : "PUT",
       headers: this._headers,
     })
       .then(res => this._сheckResponseData(res));
@@ -67,7 +67,7 @@ class Api {
 
   updateAvatar({avatar}) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
         avatar,
@@ -79,10 +79,10 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-45',
+  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-45",
   headers: {
-    authorization: 'e639a24d-299a-4e69-8f0f-4d8273c25116',
-    'Content-Type': 'application/json'
+    authorization: "e639a24d-299a-4e69-8f0f-4d8273c25116",
+    "Content-Type": "application/json"
   }
 });
 

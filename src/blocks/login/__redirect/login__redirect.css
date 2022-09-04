@@ -1,0 +1,24 @@
+.login__redirect {
+  background-size: cover;
+  margin: 0;
+  color: #FFFFFF;
+  text-decoration: none;
+  background-color: black;
+  cursor: pointer;
+}
+
+.login__redirect:hover {
+	opacity: 0.6;
+}
+
+@media screen and (min-width: 320px) {
+  .login__redirect {
+    max-width: 260px;
+		max-height: 23px;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 17px;
+		text-align: center;
+    padding-left: 5px;
+  }
+}

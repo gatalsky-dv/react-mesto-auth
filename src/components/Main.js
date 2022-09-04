@@ -1,12 +1,16 @@
 import { useContext } from "react";
-import Card from "./Card"
+import Card from "./Card";
+import Header from "./Header";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-export default function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, onCardLike, onCardDelete, cards }) {
+export default function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, onCardLike, onCardDelete, cards, onLoginClick }) {
 	
 	const currentUser = useContext(CurrentUserContext);
 	
 	return (
+		<>
+		<Header	signText="Выйти" onClick={onLoginClick} />
+
 		<main className="content">
 			
 			<section className="profile">
@@ -39,5 +43,6 @@ export default function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardCl
 			</section>
 		
 		</main>
+		</>
 	)
 }

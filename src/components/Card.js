@@ -11,7 +11,7 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 	
 	//создаем переменную, которую после зададим в className для кнопки удаления
 	const cardDeleteButtonClassName = (
-		`card__delete-button ${isOwn ? 'card__delete-button_visible' : 'card__delete-button_hidden'}`
+		`card__delete-button ${isOwn ? "card__delete-button_visible" : "card__delete-button_hidden"}`
 	);
 	
 	//определяем, есть ли у карточки лайк, поставленный текущим пользователем
@@ -35,11 +35,11 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 	return (
 		<article className="element">
 			<img src={card.link} alt={card.name} className="element__maskgroup" onClick={handleClick} />
-			<button type="button" className={`element__trash ${isOwn ? '' : 'element__trash_disabled'}`} onClick={handleDeleteClick} ></button>
+			<button type="button" className={`element__trash ${isOwn ? "" : "element__trash_disabled"}`} onClick={handleDeleteClick} ></button>
 			<div className="element__caption">
 				<h2 className="element__name">{card.name}</h2>
 				<div className="element__likes">
-					<button type="button" className={`element__heart ${isLiked ? 'element__heart_active' : ''}`} onClick={handleLikeClick} ></button>
+					<button type="button" className={`element__heart ${isLiked ? "element__heart_active" : ""}`} onClick={handleLikeClick} ></button>
 					<p className="element__counter">{likes.length}</p>
 				</div>
 			</div>
