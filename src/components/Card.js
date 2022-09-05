@@ -10,15 +10,15 @@ export default function Card({ card, onCardClick, onCardLike, onCardDelete }) {
 	const isOwn = card.owner._id === currentUser._id;
 	
 	//создаем переменную, которую после зададим в className для кнопки удаления
-	const cardDeleteButtonClassName = (
-		`card__delete-button ${isOwn ? "card__delete-button_visible" : "card__delete-button_hidden"}`
-	);
+	// const cardDeleteButtonClassName = (
+	// 	`card__delete-button ${isOwn ? "card__delete-button_visible" : "card__delete-button_hidden"}`
+	// );
 	
 	//определяем, есть ли у карточки лайк, поставленный текущим пользователем
 	const isLiked = card.likes.some( i => i._id === currentUser._id );
 	
-	//создаем переменную, которую после зададим в className для кнопки лайка
-	const cardLikeButtonlassName = `...`;
+	// //создаем переменную, которую после зададим в className для кнопки лайка
+	// const cardLikeButtonlassName = `...`;
 	
 	function handleClick() {
 		onCardClick(card);

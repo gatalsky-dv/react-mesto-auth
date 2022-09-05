@@ -1,28 +1,28 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
-import * as auth from "../utils/auth";
+import { Link, useHistory } from 'react-router-dom';
 
-export default function Register({ signText, buttonText }) {
+export default function Register({ signText, buttonText, onRegister }) {
 	
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-
-	const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-	const handlePasswordChange = (e) => {
-		setPassword(e.target.value);
-		
-  };
+	// const [message, setMessage] = useState("");
+	const history = useHistory();
+	const resetForm = () => {
+		setEmail("");
+		setPassword("");
+	};
 
 	function handleSubmit(e) {
 		e.preventDefault();
-		console.dir(e);
-		auth.register(email, password);
-		console.log("password: ", password);
-		console.log("email: ", email);
-	}
+		onRegister({ email, password })
+			.then(resetForm)
+			.then(() => {
+			history.push("/");
+		})
+		.catch((err) => {
+			console.log(err);
+		})
+	};
 
 	return (
 		<form className="login" onSubmit={handleSubmit}>
@@ -37,7 +37,7 @@ export default function Register({ signText, buttonText }) {
 				minLength="2"
 				maxLength="40"
 				value={email}
-				onChange={handleEmailChange}
+				onChange={(e) => setEmail(e.target.value)}
 			/>
 			<input
 				type="password"
@@ -49,7 +49,7 @@ export default function Register({ signText, buttonText }) {
 				minLength="2"
 				maxLength="16"
 				value={password}
-				onChange={handlePasswordChange}
+				onChange={(e) => setPassword(e.target.value)}
 			/>
 			<button
 				type="submit"

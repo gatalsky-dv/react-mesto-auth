@@ -11,6 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 import api from "../utils/Api.js";
+import * as auth from "../utils/auth";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -18,8 +19,6 @@ import AddPlacePopup from "./AddPlaceSubmit";
 
 export default function App() {
 	
-	const history = useHistory();
-
 	const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
 	const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
 	const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -27,10 +26,68 @@ export default function App() {
 	const [currentUser, setCurrentUser] = useState({});
 	const [cards, setCards] = useState([]);
 
-	const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
+	// const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
 	const [loggedIn, setLoggedIn] = useState(false);
-	const [isLiginSuccess, setIsLoginSuccess] = useState(false);
-	
+	const [userData, setUserData] = useState({});
+	const history = useHistory();
+	// const [isLiginSuccess, setIsLoginSuccess] = useState(false);
+
+	useEffect(() => {
+		let jwt = localStorage.getItem("jwt");
+		if (jwt) {
+			authentication(jwt);
+		}
+	}, [loggedIn]);
+
+	useEffect(() => {
+		if (loggedIn) {
+			history.push("/");
+		}
+	})
+
+	const handleLogin = () => {
+		setLoggedIn(true)
+	}
+
+	const onLogin = ({ email, password }) => {
+		return auth.authorize(email, password)
+				.then((data) => {
+					if (!data) {
+						console.log("Не правильное имя пользователя или пароль");
+					}
+					if (data.jwt) {
+						setLoggedIn(true);
+						localStorage.setItem("jwt", data.jwt);
+					}
+				});
+	};
+
+	const onRegister = ({ email, password }) => {
+		return auth.register(email, password)
+			.then((res) => {
+				if (!res || res.statusCode === 400) {
+					console.log("Что-то пошло не так!");
+				}
+				if (res.jwt) {
+					setLoggedIn(true);
+					localStorage.setItem("jwt", res.jwt);
+				}
+			});
+	};
+
+	const authentication = async (jwt) => {
+		auth.getContent(jwt)
+		.then((res) => {
+			if (res) {
+				setLoggedIn(true)
+				setUserData({
+					email: res.email,
+					password: res.password,
+				});
+			}
+		});
+	};
+
 	const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard
 	
 	useEffect(() => {
@@ -67,9 +124,6 @@ export default function App() {
 			});
 	}, []);
 	
-	
-
-
 	function handleCardLike(card) {
 		// снова проверяем, есть ли уже лайк на этой карточке
 		const isLiked = card.likes.some( i => i._id === currentUser._id );
@@ -113,7 +167,7 @@ export default function App() {
 			})
 			.catch((err) => console.log(err))
 	}
-	
+
 	function handleAddPlaceSubmit(name, link) {
 		api.addNewCard(name, link)
 			.then((res) => {
@@ -139,10 +193,6 @@ export default function App() {
 		setSelectedCard(card);
 	}
 
-	function handleRegisterSubmit() {
-
-	}
-	
 	function closeAllPopups() {
 		setIsEditProfilePopupOpen(false);
 		setIsAddPlacePopupOpen(false);
@@ -174,6 +224,7 @@ export default function App() {
 							path="/"
 							component={ Main }
 							loggedIn={loggedIn}
+							userData={userData}
 							onEditProfile={handleEditProfileClick}
 							onAddPlace={handleAddPlaceClick}
 							onEditAvatar={handleEditAvatarClick}
@@ -181,7 +232,7 @@ export default function App() {
 							cards={cards}
 							onCardLike={handleCardLike}
 							onCardDelete={handleCardDelete}
-							// onLoginClick={checkout}
+							onLoginClick={checkout}
 						/>
 						<Route exact path="/sign-up">
 							<Header
@@ -191,6 +242,7 @@ export default function App() {
 							<Register
 								signText="Регистрация"
 								buttonText="Зарегистрироваться"
+								onRegister={onRegister}
 								// onSubmit={handleRegisterSubmit}
 							/>
 						</Route>
@@ -202,15 +254,14 @@ export default function App() {
 							<Login
 								signText="Вход"
 								buttonText="Войти"
-								onSubmit={handleRegisterSubmit}
-								setLoggedIn={setLoggedIn}
+								onLogin={onLogin}
 							/>
 						</Route>
-						<Route>
+						<Route path="*">
 							{loggedIn ? (
 								<Redirect to="/" />
 							) : (
-								<Redirect to="/sign-up" />
+								<Redirect to="/sign-ip" />
 							)}
 						</Route>
 						{/* <Route path="*">
@@ -219,9 +270,10 @@ export default function App() {
 					</Switch>
 	
 					<InfoTooltip
-						title="Вы успешно зарегистрировались!"
-						isOpen={false}
-						name="info"
+						// title="Вы успешно зарегистрировались!"
+						// isOpen={isInfoTooltipPopupOpen}
+
+						// name="info"
 					/>
 					
 					<Footer/>
