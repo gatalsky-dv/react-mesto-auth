@@ -45,9 +45,9 @@ export default function App() {
 		}
 	})
 
-	const handleLogin = () => {
-		setLoggedIn(true)
-	}
+	// const handleLogin = () => {
+	// 	setLoggedIn(true)
+	// }
 
 	const onLogin = ({ email, password }) => {
 		return auth.authorize(email, password)
