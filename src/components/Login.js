@@ -17,7 +17,6 @@ export default function Login({ onLogin }) {
 		if (!email || !password) {
 			return;
 		} 
-			console.log(email);
 		onLogin({ email, password })
 			.then(resetForm)
 			.then(() => {
@@ -53,9 +52,7 @@ export default function Login({ onLogin }) {
 				value={password}
 				onChange={(e) => setPassword(e.target.value)}
 			/>
-			<button type="submit" className="login__button">Войти</button>
+			<button type="submit" className="login__button" >Войти</button>
 		</form>
-		
-		
 	)
 }

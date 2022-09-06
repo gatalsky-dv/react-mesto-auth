@@ -5,7 +5,6 @@ export default function Register({ signText, buttonText, onRegister }) {
 	
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	// const [message, setMessage] = useState("");
 	const history = useHistory();
 	const resetForm = () => {
 		setEmail("");
@@ -17,7 +16,7 @@ export default function Register({ signText, buttonText, onRegister }) {
 		onRegister({ email, password })
 			.then(resetForm)
 			.then(() => {
-			history.push("/");
+			history.push("/sign-up");
 		})
 		.catch((err) => {
 			console.log(err);
@@ -52,7 +51,7 @@ export default function Register({ signText, buttonText, onRegister }) {
 				onChange={(e) => setPassword(e.target.value)}
 			/>
 			<button
-				type="submit"
+				// type="submit"
 				className="login__button"
 			>
 				{ buttonText }

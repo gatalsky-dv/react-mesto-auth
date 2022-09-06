@@ -26,11 +26,12 @@ export default function App() {
 	const [currentUser, setCurrentUser] = useState({});
 	const [cards, setCards] = useState([]);
 
-	// const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
+	const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [userData, setUserData] = useState({});
 	const history = useHistory();
 	// const [isLiginSuccess, setIsLoginSuccess] = useState(false);
+	const [email, setEmail] = useState("");
 
 	useEffect(() => {
 		let token = localStorage.getItem("token");
@@ -50,22 +51,21 @@ export default function App() {
 	// 	setLoggedIn(true)
 	// }
 
-	const onLogin = ({ email, password }) => {
+	const onLogin = async ({ email, password }) => {
 		return auth
 			.authorize(email, password)
 			.then((data) => {
 				if (!data) {
-					console.log(data);
 				}
 				if (data.token) {
-					console.log(data.token);
 					setLoggedIn(true);
-					localStorage.setItem("jwt", data.token);
+					setEmail(email);
+					localStorage.setItem("token", data.token);
 				}
 			});
 	};
 
-	const onRegister = ({ email, password }) => {
+	const onRegister = async ({ email, password }) => {
 		return auth.register(email, password)
 			.then((res) => {
 				if (!res || res.statusCode === 400) {
@@ -73,14 +73,12 @@ export default function App() {
 				}
 				if (res.token) {
 					setLoggedIn(true);
-					localStorage.setItem("jwt", res.token);
+					localStorage.setItem("token", res.token);
 				}
 			});
 	};
 
 	const authentication = async (token) => {
-		console.log("jwt: ", token);
-
 		auth.getContent(token)
 		.then((res) => {
 			if (res) {
@@ -198,10 +196,15 @@ export default function App() {
 		setSelectedCard(card);
 	}
 
+	function handleRegisterClick() {
+		setIsInfoTooltipPopupOpen(true);
+	}
+
 	function closeAllPopups() {
 		setIsEditProfilePopupOpen(false);
 		setIsAddPlacePopupOpen(false);
 		setIsEditAvatarPopupOpen(false);
+		setIsInfoTooltipPopupOpen(false);
 		setSelectedCard(null);
 	}
 	
@@ -214,10 +217,10 @@ export default function App() {
 	}
 
 	function checkout() {
-		localStorage.removeItem("jwt");
+		localStorage.removeItem("token");
 		history.push("/sign-in");
 	}
-	
+
 	return (
 		<BrowserRouter>
 			<CurrentUserContext.Provider value={currentUser}>
@@ -238,19 +241,8 @@ export default function App() {
 							onCardLike={handleCardLike}
 							onCardDelete={handleCardDelete}
 							onLoginClick={checkout}
+							email={email}
 						/>
-						<Route exact path="/sign-up">
-							<Header
-								sign="Войти"
-								onLoginClick={redirectToLogin}
-							/>
-							<Register
-								signText="Регистрация"
-								buttonText="Зарегистрироваться"
-								onRegister={onRegister}
-								// onSubmit={handleRegisterSubmit}
-							/>
-						</Route>
 						<Route path="/sign-in">
 							<Header
 								sign="Регистрация"
@@ -260,6 +252,18 @@ export default function App() {
 								signText="Вход"
 								buttonText="Войти"
 								onLogin={onLogin}
+							/>
+						</Route>
+						<Route path="/sign-up">
+							<Header
+								sign="Войти"
+								onLoginClick={redirectToLogin}
+							/>
+							<Register
+								signText="Регистрация"
+								buttonText="Зарегистрироваться"
+								onRegister={onRegister}
+								onRegisterClick={handleRegisterClick}
 							/>
 						</Route>
 						<Route path="*">
@@ -275,10 +279,10 @@ export default function App() {
 					</Switch>
 	
 					<InfoTooltip
-						// title="Вы успешно зарегистрировались!"
-						// isOpen={isInfoTooltipPopupOpen}
-
-						// name="info"
+						title="Вы успешно зарегистрировались!"
+						isOpen={isInfoTooltipPopupOpen}
+						onClose={closeAllPopups}
+						name="info"
 					/>
 					
 					<Footer/>
