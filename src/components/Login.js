@@ -16,14 +16,14 @@ export default function Login({ onLogin }) {
 		e.preventDefault();
 		if (!email || !password) {
 			return;
-		} else {
-		onLogin({email, password})
+		} 
+			console.log(email);
+		onLogin({ email, password })
 			.then(resetForm)
 			.then(() => {
 				history.push("/");
 			})
-			.catch((err) => console.log("Что-то пошло не по плану!"));
-		}
+			.catch((err) => console.log(err));
 	};
 
 	return (

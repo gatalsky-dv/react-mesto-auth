@@ -33,9 +33,10 @@ export default function App() {
 	// const [isLiginSuccess, setIsLoginSuccess] = useState(false);
 
 	useEffect(() => {
-		let jwt = localStorage.getItem("jwt");
-		if (jwt) {
-			authentication(jwt);
+		let token = localStorage.getItem("token");
+
+		if (token) {
+			authentication(token);
 		}
 	}, [loggedIn]);
 
@@ -50,16 +51,18 @@ export default function App() {
 	// }
 
 	const onLogin = ({ email, password }) => {
-		return auth.authorize(email, password)
-				.then((data) => {
-					if (!data) {
-						console.log("Не правильное имя пользователя или пароль");
-					}
-					if (data.jwt) {
-						setLoggedIn(true);
-						localStorage.setItem("jwt", data.jwt);
-					}
-				});
+		return auth
+			.authorize(email, password)
+			.then((data) => {
+				if (!data) {
+					console.log(data);
+				}
+				if (data.token) {
+					console.log(data.token);
+					setLoggedIn(true);
+					localStorage.setItem("jwt", data.token);
+				}
+			});
 	};
 
 	const onRegister = ({ email, password }) => {
@@ -68,15 +71,17 @@ export default function App() {
 				if (!res || res.statusCode === 400) {
 					console.log("Что-то пошло не так!");
 				}
-				if (res.jwt) {
+				if (res.token) {
 					setLoggedIn(true);
-					localStorage.setItem("jwt", res.jwt);
+					localStorage.setItem("jwt", res.token);
 				}
 			});
 	};
 
-	const authentication = async (jwt) => {
-		auth.getContent(jwt)
+	const authentication = async (token) => {
+		console.log("jwt: ", token);
+
+		auth.getContent(token)
 		.then((res) => {
 			if (res) {
 				setLoggedIn(true)
@@ -261,7 +266,7 @@ export default function App() {
 							{loggedIn ? (
 								<Redirect to="/" />
 							) : (
-								<Redirect to="/sign-ip" />
+								<Redirect to="/sign-in" />
 							)}
 						</Route>
 						{/* <Route path="*">
