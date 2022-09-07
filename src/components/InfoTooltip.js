@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function InfoTooltip({ name, title, isOpen, onClose, buttonText, children, onSubmit }) {
+export default function InfoTooltip({ name, title, isOpen, onClose,  }) {
 	
 	return (
 		<div className={`popup popup_${name} ${isOpen ? "popup_opened" : ""}`} onClick={onClose}>

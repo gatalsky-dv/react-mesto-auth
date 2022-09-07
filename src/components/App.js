@@ -87,7 +87,7 @@ export default function App() {
 		});
 	};
 
-	const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard
+	const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard || isInfoTooltipPopupOpen;
 	
 	useEffect(() => {
 		function closeByEscape(e) {
@@ -204,14 +204,6 @@ export default function App() {
 		setSelectedCard(null);
 	}
 	
-	function redirectToRegister() {
-		history.push("/sign-up");
-	}
-
-	function redirectToLogin() {
-		history.push("/sign-in");
-	}
-
 	function checkout() {
 		localStorage.removeItem("token");
 		history.push("/sign-in");
@@ -242,7 +234,6 @@ export default function App() {
 						<Route path="/sign-in">
 							<Header
 								sign="Регистрация"
-								onLoginClick={redirectToRegister}
 							/>
 							<Login
 								signText="Вход"
@@ -253,13 +244,12 @@ export default function App() {
 						<Route path="/sign-up">
 							<Header
 								sign="Войти"
-								onLoginClick={redirectToLogin}
 							/>
 							<Register
 								signText="Регистрация"
 								buttonText="Зарегистрироваться"
 								onRegister={onRegister}
-								onRegisterClick={handleRegisterClick}
+								// onRegisterClick={handleRegisterClick}
 							/>
 						</Route>
 						<Route path="*">

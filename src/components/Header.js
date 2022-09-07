@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function Header ({ sign, email, onLoginClick }) {
@@ -11,10 +10,10 @@ export default function Header ({ sign, email, onLoginClick }) {
         <Link
 					className="header__login"
           to={(e) => sign === "Регистрация" ? "/sign-up" : "/sign-in"}
+          onClick={onLoginClick}
 				>
 					{ sign }
 				</Link>
-        {/* <button onClick={onLoginClick} className="header__login" >{ sign }</button> */}
       </div>
     </header>
   )
