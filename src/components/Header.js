@@ -1,11 +1,20 @@
-function Header() {
+import { Link } from "react-router-dom";
+
+export default function Header ({ sign, email, onLoginClick }) {
+
   return (
     <header className="header">
       <a href="#" className="header__logo" />
-      {/*<a href="#" className="header__login" >Войти</a>*/}
-      <a href="#" className="header__login" >Регистрация</a>
+      <div className="header__sign">
+        <a href={`mailto:${email}`} className="header__email">{ email }</a>
+        <Link
+					className="header__login"
+          to={(e) => sign === "Регистрация" ? "/sign-up" : "/sign-in"}
+          onClick={onLoginClick}
+				>
+					{ sign }
+				</Link>
+      </div>
     </header>
   )
 }
-
-export default Header;

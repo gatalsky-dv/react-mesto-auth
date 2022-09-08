@@ -1,9 +1,32 @@
+import { useState } from "react";
+import { useHistory } from 'react-router-dom';
 
-
-export default function Login() {
+export default function Login({ onLogin }) {
 	
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const history = useHistory();
+
+	const resetForm = () => {
+		setEmail("");
+		setPassword("");
+	}
+
+	function handleSubmit(e) {
+		e.preventDefault();
+		if (!email || !password) {
+			return;
+		} 
+		onLogin({ email, password })
+			.then(resetForm)
+			.then(() => {
+				history.push("/");
+			})
+			.catch((err) => console.log(err));
+	};
+
 	return (
-		<div className="login">
+		<form className="login" onSubmit={handleSubmit} >
 			<h2 className="login__text">Вход</h2>
 			<input
 				type="text"
@@ -14,11 +37,11 @@ export default function Login() {
 				required
 				minLength="2"
 				maxLength="40"
-				// value={name}
-				// onChange={handleNameChange}
+				value={email}
+				onChange={(e) => setEmail(e.target.value)}
 			/>
 			<input
-				type="text"
+				type="password"
 				className="login__input login__input_value_password"
 				id="password-input"
 				name="password"
@@ -26,12 +49,10 @@ export default function Login() {
 				required
 				minLength="2"
 				maxLength="200"
-				// value={about}
-				// onChange={handleAboutChange}
+				value={password}
+				onChange={(e) => setPassword(e.target.value)}
 			/>
-			<button type="submit" className="login__button">Войти</button>
-		</div>
-		
-		
+			<button type="submit" className="login__button" >Войти</button>
+		</form>
 	)
 }

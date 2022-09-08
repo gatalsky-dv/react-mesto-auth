@@ -2,8 +2,8 @@ import {useEffect, useState} from "react";
 import PopupWithForm from "./PopupWithForm";
 
 export default function AddPlaceSubmit({ isOpen, onClose, onAddPlace }) {
-	const [name, setName] = useState('');
-	const [link, setLink] = useState('');
+	const [name, setName] = useState("");
+	const [link, setLink] = useState("");
 	
 	const handleCardNameChange = (e) => {
 		setName(e.target.value);
@@ -22,8 +22,8 @@ export default function AddPlaceSubmit({ isOpen, onClose, onAddPlace }) {
 	}
 
 	useEffect(() => {
-		setName('');
-		setLink('');
+		setName("");
+		setLink("");
 	}, [isOpen]);
 	
 	return (

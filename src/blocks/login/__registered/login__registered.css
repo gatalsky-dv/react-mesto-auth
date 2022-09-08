@@ -1,0 +1,16 @@
+.login__registered {
+	color: #FFFFFF;
+	margin: 0;
+}
+
+@media screen and (min-width: 320px) {
+	.login__registered {
+		max-width: 260px;
+		max-height: 17px;
+		font-weight: 400;
+		font-size: 14px;
+		line-height: 17px;
+		text-align: center;
+		
+	}
+}
