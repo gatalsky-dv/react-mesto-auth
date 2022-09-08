@@ -1,7 +1,5 @@
 .popup__union {
 	margin: auto;
-	background: url(../../../images/success.svg) center no-repeat;
-	/*background: #000000;*/
 }
 
 @media screen and (min-width: 320px) {

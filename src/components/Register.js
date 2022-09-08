@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useHistory } from 'react-router-dom';
 
-export default function Register({ signText, buttonText, onRegister, onRegisterClick }) {
+export default function Register({ signText, buttonText, onRegister }) {
 	
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -13,7 +13,6 @@ export default function Register({ signText, buttonText, onRegister, onRegisterC
 
 	function handleSubmit(e) {
 		e.preventDefault();
-		onRegisterClick();
 		onRegister({ email, password })
 			.then(resetForm)
 			.then(() => {

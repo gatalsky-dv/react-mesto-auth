@@ -30,8 +30,9 @@ export default function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [userData, setUserData] = useState({});
 	const history = useHistory();
-	// const [isLiginSuccess, setIsLoginSuccess] = useState(false);
 	const [email, setEmail] = useState("");
+	const [image, setImage] = useState("");
+	const [text, setText] = useState("");
 
 	useEffect(() => {
 		let token = localStorage.getItem("token");
@@ -66,11 +67,16 @@ export default function App() {
 			.then((res) => {
 				if (!res || res.statusCode === 400) {
 					console.log("Что-то пошло не так!");
+					registerFail();
+				} else {
+					registerSuccess();
 				}
+				
 				if (res.token) {
 					setLoggedIn(true);
 					localStorage.setItem("token", res.token);
 				}
+				
 			});
 	};
 
@@ -192,7 +198,15 @@ export default function App() {
 		setSelectedCard(card);
 	}
 
-	function handleRegisterClick() {
+	function registerSuccess() {
+		setImage("success");
+		setText("Вы успешно зарегистрировались!");
+		setIsInfoTooltipPopupOpen(true);
+	}
+
+	function registerFail() {
+		setImage("fail");
+		setText("Что-то пошло не так! Попробуйте ещё раз.");
 		setIsInfoTooltipPopupOpen(true);
 	}
 
@@ -204,7 +218,7 @@ export default function App() {
 		setSelectedCard(null);
 	}
 	
-	function checkout() {
+	function onSignOut() {
 		localStorage.removeItem("token");
 		history.push("/sign-in");
 	}
@@ -228,7 +242,7 @@ export default function App() {
 							cards={cards}
 							onCardLike={handleCardLike}
 							onCardDelete={handleCardDelete}
-							onLoginClick={checkout}
+							onLoginClick={onSignOut}
 							email={email}
 						/>
 						<Route path="/sign-in">
@@ -259,13 +273,11 @@ export default function App() {
 								<Redirect to="/sign-in" />
 							)}
 						</Route>
-						{/* <Route path="*">
-							<NotFoundPage />
-						</Route> */}
 					</Switch>
 	
 					<InfoTooltip
-						title="Вы успешно зарегистрировались!"
+						title={text}
+						image={image}
 						isOpen={isInfoTooltipPopupOpen}
 						onClose={closeAllPopups}
 						name="info"
