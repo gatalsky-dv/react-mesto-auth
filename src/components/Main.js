@@ -3,14 +3,12 @@ import Card from "./Card";
 import Header from "./Header";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-export default function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, onCardLike, onCardDelete, cards, onLoginClick, email }) {
+export default function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, onCardLike, onCardDelete, cards }) {
 	
 	const currentUser = useContext(CurrentUserContext);
 	
 	return (
 		<>
-		<Header	sign="Выйти" onLoginClick={onLoginClick} email={email}/>
-
 		<main className="content">
 			
 			<section className="profile">

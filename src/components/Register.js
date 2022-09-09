@@ -25,7 +25,7 @@ export default function Register({ signText, buttonText, onRegister }) {
 
 	return (
 		<form className="login" onSubmit={handleSubmit}>
-			<h2 className="login__text">{ signText }</h2>
+			<h2 className="login__text">Регистрация</h2>
 			<input
 				type="email"
 				className="login__input login__input_value_email"
@@ -52,10 +52,8 @@ export default function Register({ signText, buttonText, onRegister }) {
 			/>
 			<button
 				type="submit"
-
 				className="login__button"
-			>
-				{ buttonText }
+			>Зарегистрироваться
 			</button>
 			<div className="login__question">
 				<p className="login__registered">Уже зарегистрированы?</p>
