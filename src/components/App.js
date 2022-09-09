@@ -28,7 +28,6 @@ export default function App() {
 
 	const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
 	const [loggedIn, setLoggedIn] = useState(false);
-	const [userData, setUserData] = useState({});
 	const history = useHistory();
 	const [email, setEmail] = useState("");
 	const [image, setImage] = useState("");
@@ -36,7 +35,6 @@ export default function App() {
 
 	useEffect(() => {
 		let token = localStorage.getItem("token");
-
 		if (token) {
 			authentication(token);
 		}
@@ -46,7 +44,7 @@ export default function App() {
 		if (loggedIn) {
 			history.push("/");
 		}
-	})
+	}, [history, loggedIn]);
 
 	const onLogin = async ({ email, password }) => {
 		return auth
@@ -54,6 +52,7 @@ export default function App() {
 			.then((data) => {
 				if (data.token) {
 					setLoggedIn(true);
+					history.push("/");
 					setEmail(email);
 					localStorage.setItem("token", data.token);
 				}
@@ -69,6 +68,7 @@ export default function App() {
 			.then((res) => {
 					if (res) {
 						registerSuccess();
+						history.push("/sign-in");
 						setText("Вы успешно зарегистрировались!");
 					}
 				if (res.token) {
@@ -86,12 +86,11 @@ export default function App() {
 		auth.getContent(token)
 		.then((res) => {
 			if (res) {
-				setLoggedIn(true)
-				setUserData({
-					email: res.email,
-					password: res.password,
-				});
+				setLoggedIn(true);
 			}
+		})
+		.catch((err) => {
+			console.log(err);
 		});
 	};
 
@@ -229,7 +228,6 @@ export default function App() {
 	}
 
 	return (
-		<BrowserRouter>
 			<CurrentUserContext.Provider value={currentUser}>
 				<div className="page">
 				<Header
@@ -242,7 +240,6 @@ export default function App() {
 							path="/"
 							component={ Main }
 							loggedIn={loggedIn}
-							userData={userData}
 							onEditProfile={handleEditProfileClick}
 							onAddPlace={handleAddPlaceClick}
 							onEditAvatar={handleEditAvatarClick}
@@ -311,6 +308,5 @@ export default function App() {
 					/>
 				</div>
 			</CurrentUserContext.Provider>
-		</BrowserRouter>
 	);
 }

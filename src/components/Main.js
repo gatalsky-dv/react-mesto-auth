@@ -1,12 +1,10 @@
 import { useContext } from "react";
 import Card from "./Card";
-import Header from "./Header";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-export default function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, onCardLike, onCardDelete, cards }) {
+export default function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, onCardLike, onCardDelete, cards, loggedIn }) {
 	
 	const currentUser = useContext(CurrentUserContext);
-	
 	return (
 		<>
 		<main className="content">
