@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useHistory } from 'react-router-dom';
 
 export default function Login({ onLogin }) {
 	
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const history = useHistory();
 
 	const resetForm = () => {
 		setEmail("");
@@ -19,10 +17,6 @@ export default function Login({ onLogin }) {
 		} 
 		onLogin({ email, password })
 			.then(resetForm)
-			.then(() => {
-				history.push("/");
-			})
-			.catch((err) => console.log(err));
 	};
 
 	return (

@@ -28,7 +28,6 @@ export default function App() {
 
 	const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
 	const [loggedIn, setLoggedIn] = useState(false);
-	const [userData, setUserData] = useState({});
 	const history = useHistory();
 	const [email, setEmail] = useState("");
 	const [image, setImage] = useState("");
@@ -36,7 +35,6 @@ export default function App() {
 
 	useEffect(() => {
 		let token = localStorage.getItem("token");
-
 		if (token) {
 			authentication(token);
 		}
@@ -46,50 +44,53 @@ export default function App() {
 		if (loggedIn) {
 			history.push("/");
 		}
-	})
+	}, [history, loggedIn]);
 
 	const onLogin = async ({ email, password }) => {
 		return auth
 			.authorize(email, password)
 			.then((data) => {
-				if (!data) {
-				}
 				if (data.token) {
 					setLoggedIn(true);
+					history.push("/");
 					setEmail(email);
 					localStorage.setItem("token", data.token);
 				}
-			});
+			})
+			.catch(() => {
+				registerFail();
+				setText("Неправильный email или пароль");
+			})
 	};
 
 	const onRegister = async ({ email, password }) => {
 		return auth.register(email, password)
 			.then((res) => {
-				if (!res || res.statusCode === 400) {
-					console.log("Что-то пошло не так!");
-					registerFail();
-				} else {
-					registerSuccess();
-				}
-				
+					if (res) {
+						registerSuccess();
+						history.push("/sign-in");
+						setText("Вы успешно зарегистрировались!");
+					}
 				if (res.token) {
 					setLoggedIn(true);
 					localStorage.setItem("token", res.token);
 				}
-				
-			});
+			})
+			.catch(() => {
+				registerFail();
+				setText("Что-то пошло не так! Попробуйте ещё раз.");
+			})
 	};
 
 	const authentication = async (token) => {
 		auth.getContent(token)
 		.then((res) => {
 			if (res) {
-				setLoggedIn(true)
-				setUserData({
-					email: res.email,
-					password: res.password,
-				});
+				setLoggedIn(true);
 			}
+		})
+		.catch((err) => {
+			console.log(err);
 		});
 	};
 
@@ -110,24 +111,28 @@ export default function App() {
 	}, [isOpen]);
 
 	useEffect(() => {
-		api.getUserInfo()
-			.then((res) => {
-				setCurrentUser(res);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	}, []);
+		if (loggedIn) {
+			api.getUserInfo()
+				.then((res) => {
+					setCurrentUser(res);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	}, [loggedIn]);
 	
 	useEffect(() => {
-		api.getInitialCards()
-			.then((res) => {
-				setCards(res);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	}, []);
+		if (loggedIn) {
+			api.getInitialCards()
+				.then((res) => {
+					setCards(res);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	}, [loggedIn]);
 	
 	function handleCardLike(card) {
 		// снова проверяем, есть ли уже лайк на этой карточке
@@ -200,13 +205,11 @@ export default function App() {
 
 	function registerSuccess() {
 		setImage("success");
-		setText("Вы успешно зарегистрировались!");
 		setIsInfoTooltipPopupOpen(true);
 	}
 
 	function registerFail() {
 		setImage("fail");
-		setText("Что-то пошло не так! Попробуйте ещё раз.");
 		setIsInfoTooltipPopupOpen(true);
 	}
 
@@ -220,21 +223,23 @@ export default function App() {
 	
 	function onSignOut() {
 		localStorage.removeItem("token");
+		setEmail("");
 		history.push("/sign-in");
 	}
 
 	return (
-		<BrowserRouter>
 			<CurrentUserContext.Provider value={currentUser}>
 				<div className="page">
-					
+				<Header
+								email={email}
+								onLoginClick={onSignOut}
+							/>
 					<Switch>
 						<ProtectedRoute
 							exact
 							path="/"
 							component={ Main }
 							loggedIn={loggedIn}
-							userData={userData}
 							onEditProfile={handleEditProfileClick}
 							onAddPlace={handleAddPlaceClick}
 							onEditAvatar={handleEditAvatarClick}
@@ -242,28 +247,15 @@ export default function App() {
 							cards={cards}
 							onCardLike={handleCardLike}
 							onCardDelete={handleCardDelete}
-							onLoginClick={onSignOut}
-							email={email}
 						/>
 						<Route path="/sign-in">
-							<Header
-								sign="Регистрация"
-							/>
 							<Login
-								signText="Вход"
-								buttonText="Войти"
 								onLogin={onLogin}
 							/>
 						</Route>
 						<Route path="/sign-up">
-							<Header
-								sign="Войти"
-							/>
 							<Register
-								signText="Регистрация"
-								buttonText="Зарегистрироваться"
 								onRegister={onRegister}
-								// onRegisterClick={handleRegisterClick}
 							/>
 						</Route>
 						<Route path="*">
@@ -275,6 +267,8 @@ export default function App() {
 						</Route>
 					</Switch>
 	
+
+
 					<InfoTooltip
 						title={text}
 						image={image}
@@ -314,6 +308,5 @@ export default function App() {
 					/>
 				</div>
 			</CurrentUserContext.Provider>
-		</BrowserRouter>
 	);
 }

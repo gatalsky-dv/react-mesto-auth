@@ -22,7 +22,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
     })
-      .then(res => this._сheckResponseData(res))
+      .then(res => this._сheckResponseData(res));
   }
 
   editProfile({name, about}) {

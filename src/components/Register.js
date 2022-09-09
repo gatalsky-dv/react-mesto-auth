@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-export default function Register({ signText, buttonText, onRegister }) {
+export default function Register({ onRegister }) {
 	
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const history = useHistory();
 	const resetForm = () => {
 		setEmail("");
 		setPassword("");
@@ -15,17 +14,11 @@ export default function Register({ signText, buttonText, onRegister }) {
 		e.preventDefault();
 		onRegister({ email, password })
 			.then(resetForm)
-			.then(() => {
-			history.push("/sign-in");
-		})
-		.catch((err) => {
-			console.log(err);
-		})
 	};
 
 	return (
 		<form className="login" onSubmit={handleSubmit}>
-			<h2 className="login__text">{ signText }</h2>
+			<h2 className="login__text">Регистрация</h2>
 			<input
 				type="email"
 				className="login__input login__input_value_email"
@@ -52,10 +45,8 @@ export default function Register({ signText, buttonText, onRegister }) {
 			/>
 			<button
 				type="submit"
-
 				className="login__button"
-			>
-				{ buttonText }
+			>Зарегистрироваться
 			</button>
 			<div className="login__question">
 				<p className="login__registered">Уже зарегистрированы?</p>
