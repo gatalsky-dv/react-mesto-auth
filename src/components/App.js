@@ -71,10 +71,6 @@ export default function App() {
 						history.push("/sign-in");
 						setText("Вы успешно зарегистрировались!");
 					}
-				if (res.token) {
-					setLoggedIn(true);
-					localStorage.setItem("token", res.token);
-				}
 			})
 			.catch(() => {
 				registerFail();
@@ -87,6 +83,7 @@ export default function App() {
 		.then((res) => {
 			if (res) {
 				setLoggedIn(true);
+				setEmail(res.data.email);
 			}
 		})
 		.catch((err) => {
